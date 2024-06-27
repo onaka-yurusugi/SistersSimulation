@@ -1,6 +1,9 @@
 # SistersSimulation
 対戦型妹恋愛シミュレーションゲームです。僕が負けます。
 
+# 開発背景
+https://x.com/onaka_yuruyuri/status/1803357826917736542
+
 # 設計
 ![image](https://github.com/onaka-yurusugi/SistersSimulation/assets/36509859/7401113a-596d-470f-b44b-93d7b585598c)
 

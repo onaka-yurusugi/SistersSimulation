@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>妹萌え萌えコミュニケーションゲーム</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-window">
+            <img src="./images/ツンデレ.webp" alt="キャラクター" id="character-image">
+            <div class="producer-comment">
+                <p class="producer-name">ぼく</p>
+                <p id="producer-text">(何を話そうかな？)</p>
+            </div>
+        </div>
+        <div class="options-container">
+            <button class="option-button" data-outcome="normal">ショッピングが好きなの?</button>
+            <button class="option-button" data-outcome="perfect">どんな島?</button>
+            <button class="option-button" data-outcome="bad">小物が好きって、女の子らしいよね</button>
+        </div>
+        <div id="result-container" class="result-container hidden">
+            <div id="result-icon"></div>
+            <p id="result-text"></p>
+            <p id="feedback-text"></p>
+        </div>
+        <div class="turn-counter">
+            <span id="turn-number">4</span>
+            <p>ターン</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

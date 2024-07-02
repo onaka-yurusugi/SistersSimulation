@@ -6,40 +6,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackText = document.getElementById('feedback-text');
     const turnNumber = document.getElementById('turn-number');
     const producerText = document.getElementById('producer-text');
+    const nextTurnButton = document.getElementById('next-turn-button');
 
     let currentTurn = 4;
     let isLocked = false;
-
-    const outcomes = {
-        normal: { icon: '⚠️', text: 'ノーマル', feedback: 'まあまあの反応です。もう少し工夫できそうですね。' },
-        perfect: { icon: '✅', text: 'パーフェクト', feedback: '素晴らしい質問です！相手の興味を引き出せています。' },
-        bad: { icon: '❌', text: 'バッド', feedback: 'ステレオタイプな発言は避けましょう。もっと個人の興味に焦点を当てると良いでしょう。' }
-    };
 
     optionButtons.forEach(button => {
         button.addEventListener('click', () => handleSelection(button));
     });
 
-    function handleSelection(selectedButton) {
+    nextTurnButton.addEventListener('click', startNextTurn);
+
+    async function evaluateMessage(message, personality) {
+        const response = await fetch('http://localhost:8101/evaluate', {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message, personality })
+        });
+
+        if (!response.ok) {
+            throw new Error('APIリクエストに失敗しました');
+        }
+
+        return response.json();
+    }
+
+    async function handleSelection(selectedButton) {
         if (isLocked) return;
 
         isLocked = true;
-        const outcome = selectedButton.dataset.outcome;
+        const message = selectedButton.textContent;
 
         optionButtons.forEach(button => {
             button.disabled = button !== selectedButton;
         });
 
-        updateResult(outcome);
-        updateTurnCounter();
-        updateProducerComment();
+        try {
+            const result = await evaluateMessage(message, "ツンデレ妹");
+            updateResult(result);
+            updateTurnCounter();
+            updateSisterComment(result.反応, result.心の声);
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            isLocked = false;
+            nextTurnButton.classList.remove('hidden');
+        }
     }
 
-    function updateResult(outcome) {
-        const { icon, text, feedback } = outcomes[outcome];
+    function updateResult(result) {
+        let icon;
+        if (result.評価 <= 0) {
+            icon = '😅 バッド'; // バッド
+        } else if (result.評価 < 10) {
+            icon = '😉 ノーマル'; // ノーマル
+        } else if (result.評価 < 20) {
+            icon = '😊 グッド'; // グッド
+        } else {
+            icon = '😇 パーフェクト'; // パーフェクト
+        }
+
         resultIcon.textContent = icon;
-        resultText.textContent = text;
-        feedbackText.textContent = feedback;
+        resultText.textContent = `評価: ${result.評価}`;
+        feedbackText.textContent = `累計親愛度: ${result.累計親愛度}`;
         resultContainer.classList.remove('hidden');
     }
 
@@ -52,12 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateProducerComment() {
-        producerText.textContent = '(選択完了しました)';
+    function updateSisterComment(reaction, innerVoice) {
+        producerText.textContent = `${reaction} ${innerVoice}`;
+    }
+
+    function startNextTurn() {
+        resultContainer.classList.add('hidden');
+        nextTurnButton.classList.add('hidden');
+        optionButtons.forEach(button => {
+            button.disabled = false;
+        });
+        updateSisterComment("新しいターンが始まりました！", "");
     }
 
     function endGame() {
         optionButtons.forEach(button => button.disabled = true);
+        nextTurnButton.classList.add('hidden');
         producerText.textContent = '(ゲーム終了)';
     }
 });

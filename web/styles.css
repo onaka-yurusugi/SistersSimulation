@@ -45,6 +45,7 @@ body {
 }
 
 .option-button {
+    font-size: 24px;
     display: block;
     width: 100%;
     padding: 10px;
@@ -87,4 +88,20 @@ body {
     font-size: 48px;
     font-weight: bold;
     color: #3490dc;
+}
+
+#next-turn-button {
+    font-size: 24px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #38c172;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-turn-button:hover:not(:disabled) {
+    background-color: #2d995b;
 }

@@ -8,37 +8,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectButton = document.getElementById("select-button");
     const characterSelect = document.getElementById("character-select");
     const svgAnimation = document.getElementById('svg-animation');
+    const freeTextButton = document.getElementById('free-text-button');
+    const freeTextInput = document.getElementById('free-text-input');
+    const freeTextContainer = document.getElementById('free-text-container');
+    const optionsContainer = document.getElementById('options-container');
+    const modeToggleButton = document.getElementById('mode-toggle-button');
 
     let isLocked = false;
-    let affectionTotal = 0; // 親愛度の初期値
-    let personality = "ツンデレ妹"; // 初期値としてツンデレ妹を設定
+    let affectionTotal = 0;
+    let personality = "ツンデレ妹";
+    let isFreeTextMode = false;
 
-    // モーダルを表示
+    // 初期状態で自由記入エリアを非表示に設定
+    freeTextContainer.style.display = 'none';
+
     modal.style.display = "flex";
 
-    // キャラクター選択ボタンのクリックイベントを設定
     selectButton.addEventListener("click", () => {
         personality = characterSelect.value;
         updateCharacter(personality);
         modal.style.display = "none";
     });
 
-    // 選択ボタンの処理
-    async function handleSelection(selectedButton) {
+    freeTextButton.addEventListener('click', async () => {
         if (isLocked) return;
 
         isLocked = true;
-        const message = selectedButton.textContent;
-
-        // 他のボタンを無効にする
-        const optionButtons = document.querySelectorAll('.option-button');
-        optionButtons.forEach(button => {
-            button.disabled = button !== selectedButton;
-        });
+        const message = freeTextInput.value;
+        freeTextInput.value = '';
 
         try {
             const result = await evaluateMessage(message, personality, affectionTotal);
-            affectionTotal += result.評価; // 親愛度を更新
+            affectionTotal += result.評価;
             updateResult(result);
             playAnimation();
             updateSisterComment(result.反応, result.心の声);
@@ -46,14 +47,48 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         } finally {
             isLocked = false;
-            // 全てのボタンを再度有効にする
+        }
+    });
+
+    modeToggleButton.addEventListener('click', () => {
+        isFreeTextMode = !isFreeTextMode;
+        if (isFreeTextMode) {
+            optionsContainer.style.display = 'none';
+            freeTextContainer.style.display = 'flex';
+            modeToggleButton.textContent = "選択肢モードに切り替え";
+        } else {
+            optionsContainer.style.display = 'flex';
+            freeTextContainer.style.display = 'none';
+            modeToggleButton.textContent = "自由記入モードに切り替え";
+        }
+    });
+
+    async function handleSelection(selectedButton) {
+        if (isLocked) return;
+
+        isLocked = true;
+        const message = selectedButton.textContent;
+
+        const optionButtons = document.querySelectorAll('.option-button');
+        optionButtons.forEach(button => {
+            button.disabled = button !== selectedButton;
+        });
+
+        try {
+            const result = await evaluateMessage(message, personality, affectionTotal);
+            affectionTotal += result.評価;
+            updateResult(result);
+            playAnimation();
+            updateSisterComment(result.反応, result.心の声);
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            isLocked = false;
             optionButtons.forEach(button => button.disabled = false);
-            // 新しい選択肢を表示
             displayRandomOptions(handleSelection);
         }
     }
 
-    // 結果を更新する
     function updateResult(result) {
         const icon = getResultIcon(result.評価);
 
@@ -64,25 +99,22 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.classList.add('show');
     }
 
-    // 評価に応じたアイコンを取得する
     function getResultIcon(score) {
         if (score <= 0) {
-            return '😅 バッド'; // バッド
+            return '😅 バッド';
         } else if (score < 10) {
-            return '😉 ノーマル'; // ノーマル
+            return '😉 ノーマル';
         } else if (score < 20) {
-            return '😊 グッド'; // グッド
+            return '😊 グッド';
         } else {
-            return '😇 パーフェクト'; // パーフェクト
+            return '😇 パーフェクト';
         }
     }
 
-    // 妹のコメントを更新する
     function updateSisterComment(reaction, innerVoice) {
         producerText.textContent = `${reaction} (${innerVoice})`;
     }
 
-    // アニメーションを再生する
     function playAnimation() {
         svgAnimation.style.display = 'block';
         svgAnimation.style.opacity = 1;
@@ -94,6 +126,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // 初期表示時にもイベントリスナーを設定
     displayRandomOptions(handleSelection);
 });

@@ -195,3 +195,49 @@ body {
 #select-button:hover {
     background-color: #0056b3;
 }
+
+/* 自由記入モードのスタイル */
+.free-text-container {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#free-text-input {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+}
+
+#free-text-button {
+    font-size: 18px;
+    padding: 10px;
+    background-color: #38c172;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#free-text-button:hover {
+    background-color: #2d995b;
+}
+
+#mode-toggle-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f6993f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#mode-toggle-button:hover {
+    background-color: #de751f;
+}

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>妹萌え萌えコミュニケーションゲーム</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="game-container">
         <div class="game-window">
@@ -14,6 +16,8 @@
                 <p class="producer-name">【ツンデレ妹】</p>
                 <p id="producer-text">・・・なによ。</p>
             </div>
+            <object id="svg-animation" type="image/svg+xml" data="./effects/favorability-up-animation.svg"
+                class="svg-animation"></object>
         </div>
         <div class="options-container">
             <button class="option-button" data-outcome="normal">髪型変えたんだね、すごく似合ってるよ。</button>
@@ -24,13 +28,9 @@
             <div id="result-icon"></div>
             <p id="result-text"></p>
             <p id="feedback-text"></p>
-            <button id="next-turn-button" class="hidden">次のターンへ</button>
-        </div>
-        <div class="turn-counter">
-            <span id="turn-number">4</span>
-            <p>ターン</p>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

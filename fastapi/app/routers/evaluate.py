@@ -9,26 +9,20 @@ router = APIRouter()
 # ロガーの設定
 logger = logging.getLogger(__name__)
 
-# 親愛度の初期値
-affection_score = 0
-
 game_rules = GameRules()
-
-# グローバル変数として親愛度の累計を管理
-affection_total = {"score": 0}
 
 @router.post("/evaluate")
 async def evaluate_message(request: EvaluationRequest):
-    global affection_total
-
     user_message = request.message
     personality = request.personality
+    current_affection = request.current_affection
 
     # デバッグ: リクエストデータの確認
     logger.info(f"Received message: {user_message}")
     logger.info(f"Received personality: {personality}")
+    logger.info(f"Current affection: {current_affection}")
 
-    prompt = game_rules.create_prompt(user_message, personality, affection_total["score"])
+    prompt = game_rules.create_prompt(user_message, personality, current_affection)
 
     try:
         completion = game_rules.call_openai_api(prompt, personality)
@@ -55,23 +49,9 @@ async def evaluate_message(request: EvaluationRequest):
         logger.error("Incomplete response from OpenAI API")
         raise HTTPException(status_code=500, detail="Incomplete response from OpenAI API")
 
-    # 親愛度の調整
-    affection_total["score"] += evaluation
-
-    # デレイベントのトリガー
-    if affection_total["score"] > 100:
-        return {
-            "message": "妹がデレました！",
-            "評価": evaluation,
-            "累計親愛度": affection_total["score"],
-            "反応": response_message,
-            "心の声": f"({feedback})"
-        }
-
     return {
         "message": "評価完了",
         "評価": evaluation,
-        "累計親愛度": affection_total["score"],
         "反応": response_message,
         "心の声": f"({feedback})"
     }

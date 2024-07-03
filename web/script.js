@@ -6,25 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackText = document.getElementById('feedback-text');
     const turnNumber = document.getElementById('turn-number');
     const producerText = document.getElementById('producer-text');
-    const nextTurnButton = document.getElementById('next-turn-button');
 
-    let currentTurn = 4;
     let isLocked = false;
+    let affectionTotal = 0; // 親愛度の初期値
 
     optionButtons.forEach(button => {
         button.addEventListener('click', () => handleSelection(button));
     });
 
-    nextTurnButton.addEventListener('click', startNextTurn);
-
-    async function evaluateMessage(message, personality) {
+    async function evaluateMessage(message, personality, currentAffection) {
         const response = await fetch('http://localhost:8101/evaluate', {
             method: 'POST',
             headers: {
                 'accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ message, personality })
+            body: JSON.stringify({ message, personality, current_affection: currentAffection })
         });
 
         if (!response.ok) {
@@ -45,15 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         try {
-            const result = await evaluateMessage(message, "ツンデレ妹");
+            const result = await evaluateMessage(message, "ツンデレ妹", affectionTotal);
+            affectionTotal += result.評価; // 親愛度を更新
             updateResult(result);
-            updateTurnCounter();
+            playAnimation();
             updateSisterComment(result.反応, result.心の声);
         } catch (error) {
             console.error('Error:', error);
         } finally {
             isLocked = false;
-            nextTurnButton.classList.remove('hidden');
+            optionButtons.forEach(button => button.disabled = false); // ボタンを再度有効にする
         }
     }
 
@@ -71,35 +69,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resultIcon.textContent = icon;
         resultText.textContent = `評価: ${result.評価}`;
-        feedbackText.textContent = `累計親愛度: ${result.累計親愛度}`;
+        feedbackText.textContent = `累計親愛度: ${affectionTotal}`;
         resultContainer.classList.remove('hidden');
-    }
-
-    function updateTurnCounter() {
-        currentTurn--;
-        turnNumber.textContent = currentTurn;
-
-        if (currentTurn === 0) {
-            endGame();
-        }
+        resultContainer.classList.add('show');
     }
 
     function updateSisterComment(reaction, innerVoice) {
         producerText.textContent = `${reaction} ${innerVoice}`;
     }
 
-    function startNextTurn() {
-        resultContainer.classList.add('hidden');
-        nextTurnButton.classList.add('hidden');
-        optionButtons.forEach(button => {
-            button.disabled = false;
-        });
-        updateSisterComment("新しいターンが始まりました！", "");
-    }
-
-    function endGame() {
-        optionButtons.forEach(button => button.disabled = true);
-        nextTurnButton.classList.add('hidden');
-        producerText.textContent = '(ゲーム終了)';
+    function playAnimation() {
+        const svgAnimation = document.getElementById('svg-animation');
+        svgAnimation.style.display = 'block';
+        svgAnimation.style.opacity = 1;
+        setTimeout(() => {
+            svgAnimation.style.opacity = 0;
+            setTimeout(() => {
+                svgAnimation.style.display = 'none';
+            }, 1000);
+        }, 3000);
     }
 });

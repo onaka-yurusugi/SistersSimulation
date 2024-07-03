@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9A8B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF6A88;stop-opacity:1" />
+    </linearGradient>
+    <filter id="blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+    </filter>
+  </defs>
+  <style>
+    @keyframes float {
+      0% { transform: translate(var(--tx0), 200px) scale(0.2); opacity: 0; }
+      50% { transform: translate(var(--tx1), var(--ty1)) scale(1); opacity: 0.7; }
+      100% { transform: translate(var(--tx2), 0px) scale(0.5); opacity: 0; }
+    }
+    @keyframes textReveal {
+      0% { stroke-dashoffset: 500; opacity: 0; }
+      50% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .particle {
+      animation: float 4s ease-in-out infinite;
+      animation-delay: calc(var(--delay) * -1s);
+    }
+    .text {
+      font-family: 'Arial', sans-serif;
+      font-size: 32px;
+      font-weight: bold;
+      fill: none;
+      stroke: url(#grad1);
+      stroke-width: 2px;
+      stroke-dasharray: 500;
+      stroke-dashoffset: 500;
+      animation: textReveal 4s ease-out forwards;
+    }
+    .subtext {
+      font-family: 'Arial', sans-serif;
+      font-size: 18px;
+      fill: #FF6A88;
+      opacity: 0;
+      animation: fadeIn 2s ease-out 2s forwards;
+    }
+  </style>
+
+  <text x="50%" y="50%" text-anchor="middle" class="text">好感度アップ！</text>
+  <text x="50%" y="65%" text-anchor="middle" class="subtext">妹、大満足</text>
+
+  <g>
+    <circle cx="0" cy="0" r="5" fill="#FF9A8B" class="particle" style="--tx0: 50px; --tx1: 100px; --tx2: 150px; --ty1: 100px; --delay: 0;" />
+    <circle cx="0" cy="0" r="7" fill="#FF6A88" class="particle" style="--tx0: 100px; --tx1: 150px; --tx2: 200px; --ty1: 80px; --delay: 0.5;" />
+    <circle cx="0" cy="0" r="4" fill="#FFB38B" class="particle" style="--tx0: 200px; --tx1: 250px; --tx2: 300px; --ty1: 120px; --delay: 1;" />
+    <path d="M-8,0 L0,-8 L8,0 L0,8 Z" fill="#FF6A88" class="particle" style="--tx0: 150px; --tx1: 200px; --tx2: 250px; --ty1: 60px; --delay: 1.5;" />
+    <path d="M-6,-6 L6,-6 L0,6 Z" fill="#FF9A8B" class="particle" style="--tx0: 250px; --tx1: 200px; --tx2: 150px; --ty1: 140px; --delay: 2;" />
+  </g>
+
+  <rect x="0" y="0" width="100%" height="100%" fill="url(#grad1)" opacity="0.1" />
+  <g filter="url(#blur)">
+    <circle cx="150" cy="100" r="80" fill="url(#grad1)" opacity="0.2" />
+  </g>
+</svg>

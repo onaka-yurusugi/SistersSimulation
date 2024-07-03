@@ -43,7 +43,8 @@ class GameRules:
 
     def call_openai_api(self, prompt: str, personality: str):
         return self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",
+            # model="gpt-4o",
             messages=[
                 {"role": "system", "content": self.system_message},
                 {"role": "system", "content": self.personalities[personality]},

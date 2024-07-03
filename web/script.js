@@ -4,11 +4,89 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultIcon = document.getElementById('result-icon');
     const resultText = document.getElementById('result-text');
     const feedbackText = document.getElementById('feedback-text');
-    const turnNumber = document.getElementById('turn-number');
     const producerText = document.getElementById('producer-text');
+    const modal = document.getElementById("modal");
+    const characterImage = document.getElementById("character-image");
+    const characterName = document.getElementById("character-name");
+    const selectButton = document.getElementById("select-button");
+    const characterSelect = document.getElementById("character-select");
 
     let isLocked = false;
     let affectionTotal = 0; // 親愛度の初期値
+    let personality = "ツンデレ妹"; // 初期値としてツンデレ妹を設定
+
+    modal.style.display = "flex";
+
+    selectButton.addEventListener("click", () => {
+        personality = characterSelect.value;
+        updateCharacter(personality);
+        modal.style.display = "none";
+    });
+
+    function updateCharacter(personality) {
+        switch (personality) {
+            case "ツンデレ妹":
+                characterImage.src = "./images/ツンデレ.webp";
+                characterName.textContent = "【ツンデレ妹】";
+                producerText.textContent = "・・・なによ。";
+                break;
+            case "クーデレ妹":
+                characterImage.src = "./images/クーデレ.webp";
+                characterName.textContent = "【クーデレ妹】";
+                producerText.textContent = "うん、なに？";
+                break;
+            case "デレデレ妹":
+                characterImage.src = "./images/デレデレ.webp";
+                characterName.textContent = "【デレデレ妹】";
+                producerText.textContent = "お兄ちゃん、大好き！";
+                break;
+            case "ヤンデレ妹":
+                characterImage.src = "./images/ヤンデレ.webp";
+                characterName.textContent = "【ヤンデレ妹】";
+                producerText.textContent = "お兄ちゃんは私だけのもの...";
+                break;
+            case "活発妹":
+                characterImage.src = "./images/活発.webp";
+                characterName.textContent = "【活発妹】";
+                producerText.textContent = "お兄ちゃん、遊ぼうよ！";
+                break;
+            case "ダウナー妹":
+                characterImage.src = "./images/ダウナー.webp";
+                characterName.textContent = "【ダウナー妹】";
+                producerText.textContent = "ふーん、別に...";
+                break;
+            case "おっとり妹":
+                characterImage.src = "./images/おっとり.webp";
+                characterName.textContent = "【おっとり妹】";
+                producerText.textContent = "お兄ちゃん、どうしたの？";
+                break;
+            case "ミステリアス妹":
+                characterImage.src = "./images/ミステリアス.webp";
+                characterName.textContent = "【ミステリアス妹】";
+                producerText.textContent = "秘密が多い妹...";
+                break;
+            case "社交的妹":
+                characterImage.src = "./images/社交的.webp";
+                characterName.textContent = "【社交的妹】";
+                producerText.textContent = "お兄ちゃん、友達と遊びに行こうよ！";
+                break;
+            case "クリエイティブ妹":
+                characterImage.src = "./images/クリエイティブ.webp";
+                characterName.textContent = "【クリエイティブ妹】";
+                producerText.textContent = "お兄ちゃん、これ見て！";
+                break;
+            case "委員長妹":
+                characterImage.src = "./images/委員長.webp";
+                characterName.textContent = "【委員長妹】";
+                producerText.textContent = "お兄ちゃん、宿題やった？";
+                break;
+            case "夢見がち妹":
+                characterImage.src = "./images/夢見がち.webp";
+                characterName.textContent = "【夢見がち妹】";
+                producerText.textContent = "お兄ちゃん、夢の話しようよ！";
+                break;
+        }
+    }
 
     optionButtons.forEach(button => {
         button.addEventListener('click', () => handleSelection(button));
@@ -42,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         try {
-            const result = await evaluateMessage(message, "ツンデレ妹", affectionTotal);
+            const result = await evaluateMessage(message, personality, affectionTotal);
             affectionTotal += result.評価; // 親愛度を更新
             updateResult(result);
             playAnimation();

@@ -13,7 +13,7 @@
         <div class="game-window">
             <img src="./images/ツンデレ.webp" alt="キャラクター" id="character-image">
             <div class="producer-comment">
-                <p class="producer-name">【ツンデレ妹】</p>
+                <p class="producer-name" id="character-name">【ツンデレ妹】</p>
                 <p id="producer-text">・・・なによ。</p>
             </div>
             <object id="svg-animation" type="image/svg+xml" data="./effects/favorability-up-animation.svg"
@@ -30,6 +30,29 @@
             <p id="feedback-text"></p>
         </div>
     </div>
+
+    <!-- モーダル -->
+    <div id="modal">
+        <div id="modalContent">
+            <h2>妹の性格を選んでください</h2>
+            <select id="character-select">
+                <option value="ツンデレ妹">ツンデレ妹</option>
+                <option value="クーデレ妹">クーデレ妹</option>
+                <option value="デレデレ妹">デレデレ妹</option>
+                <option value="ヤンデレ妹">ヤンデレ妹</option>
+                <option value="活発妹">活発妹</option>
+                <option value="ダウナー妹">ダウナー妹</option>
+                <option value="おっとり妹">おっとり妹</option>
+                <option value="ミステリアス妹">ミステリアス妹</option>
+                <option value="社交的妹">社交的妹</option>
+                <option value="クリエイティブ妹">クリエイティブ妹</option>
+                <option value="委員長妹">委員長妹</option>
+                <option value="夢見がち妹">夢見がち妹</option>
+            </select>
+            <button id="select-button">決定</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 

@@ -58,7 +58,7 @@ const personalities = {
     },
     "社交的妹": {
         "description": "あなたは誰とでもすぐに友達になれる、パーティーが大好きな社交的な妹です。",
-        "bonusTopic": "パーティー",
+        "bonusTopic": "容姿",
         "characterImage": "./images/社交的.webp",
         "characterName": "【社交的妹】",
         "producerText": "お兄ちゃん、洋服買いに行こうよ！"

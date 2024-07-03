@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const optionButtons = document.querySelectorAll('.option-button');
     const resultContainer = document.getElementById('result-container');
     const resultIcon = document.getElementById('result-icon');
     const resultText = document.getElementById('result-text');
@@ -24,11 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = "none";
     });
 
-    // 各オプションボタンにクリックイベントを設定
-    optionButtons.forEach(button => {
-        button.addEventListener('click', () => handleSelection(button));
-    });
-
     // 選択ボタンの処理
     async function handleSelection(selectedButton) {
         if (isLocked) return;
@@ -37,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const message = selectedButton.textContent;
 
         // 他のボタンを無効にする
+        const optionButtons = document.querySelectorAll('.option-button');
         optionButtons.forEach(button => {
             button.disabled = button !== selectedButton;
         });
@@ -53,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
             isLocked = false;
             // 全てのボタンを再度有効にする
             optionButtons.forEach(button => button.disabled = false);
+            // 新しい選択肢を表示
+            displayRandomOptions(handleSelection);
         }
     }
 
@@ -96,4 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         }, 3000);
     }
+
+    // 初期表示時にもイベントリスナーを設定
+    displayRandomOptions(handleSelection);
 });

@@ -63,6 +63,7 @@ body {
 }
 
 .option-button:hover:not(:disabled) {
+    font-weight: bold;
     background-color: #ff9eb5;
     color: #333;
 }
@@ -73,6 +74,7 @@ body {
 }
 
 .option-button.selected {
+    font-weight: bold;
     background-color: #ffc0cb;
     border: 2px solid #ff69b4;
     color: #333;
@@ -213,6 +215,7 @@ body {
 }
 
 #free-text-input {
+    font-weight: bold;
     font-size: 16px;
     padding: 10px;
     border: 1px solid #ccc;

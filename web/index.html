@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>妹萌え萌えコミュニケーションゲーム</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&family=Hannari&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <div class="game-container">
         <div class="game-window">
@@ -21,6 +20,9 @@
         </div>
         <div class="options-container" id="options-container">
             <!-- ボタンがここに追加されます -->
+            <button class="option-button">Option 1</button>
+            <button class="option-button">Option 2</button>
+            <button class="option-button">Option 3</button>
         </div>
         <div id="free-text-container" class="free-text-container hidden">
             <textarea id="free-text-input" placeholder="自由に入力してください..."></textarea>
@@ -56,10 +58,10 @@
         </div>
     </div>
 
-    <script src="character.js"></script>
-    <script src="gameRules.js"></script>
-    <script src="produce.js"></script>
-    <script src="main.js"></script>
+    <script src="./js/character.js"></script>
+    <script src="./js/gameRules.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/produce.js"></script>
+    <script src="./js/sendGpt.js"></script>
 </body>
-
 </html>
